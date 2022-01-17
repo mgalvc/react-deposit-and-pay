@@ -1,6 +1,7 @@
 import { ArrowDownward, ArrowUpward } from "@mui/icons-material"
 import { Avatar, List, ListItem, ListItemAvatar, ListItemText } from "@mui/material"
 import { green, orange } from "@mui/material/colors"
+import { format } from 'date-fns'
 
 export default function History({ history }) {
   const actions = {
@@ -17,14 +18,18 @@ export default function History({ history }) {
     return d ? ` to ${d} ` : ''
   }
 
+  const parsedDate = (date) => {
+    return format(date, 'MMM dd, yyyy - HH:mm')
+  }
+
   const getItemTitle = (item) => {
-    return `${actions[item.action]}${destination(item.destination)} in ${item.timestamp}`
+    return `${actions[item.action]}${destination(item.destination)} in ${parsedDate(item.timestamp)}`
   }
 
   const list = () => {
     return history.map(h => {
       return (
-        <ListItem>
+        <ListItem key={h.timestamp}>
           <ListItemAvatar>
               {actionIcons[h.action]}
           </ListItemAvatar>
